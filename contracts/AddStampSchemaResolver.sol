@@ -5,15 +5,14 @@ import { SchemaResolver } from "@ethereum-attestation-service/eas-contracts/cont
 
 import { IEAS, Attestation } from "@ethereum-attestation-service/eas-contracts/contracts/IEAS.sol";
 
-contract StampSchemaResolver is SchemaResolver {
+contract AddStampSchemaResolver is SchemaResolver {
     constructor(IEAS eas) SchemaResolver(eas) {
     }
 
-    // we should parse the data by using the schema
-    function onAttest(Attestation calldata attestation, uint256 /*value*/) internal view override returns (bool) {
-        require(attestation.data.length == 0, "There is data!");
-        require(attestation.recipient != address(0), "There is no receipent!");
-        return _eas.getAttestation(attestation.refUID).attester == attestation.attester;
+    function onAttest(Attestation calldata attestation, uint256 /*value*/) internal pure override returns (bool) {
+        require(attestation.data.length > 0, "There is no uri!");
+        require(attestation.recipient == address(0), "There is recipient!");
+        return true;
     }
 
     function onRevoke(Attestation calldata /*attestation*/, uint256 /*value*/) internal pure override returns (bool) {
