@@ -12,6 +12,9 @@ import { EIP712Signature, InvalidSignature } from "@ethereum-attestation-service
  * @title EIP712 typed signatures verifier for EAS delegated attestations.
  */
 abstract contract EIP712Verifier is EIP712 {
+    // keccak256("Stamper(bytes32 schema,address receipent,uint64 expirationTime,bool revocable,bytes32 refUID,bytes data)");
+    bytes32 private constant STAMPER_TYPEHASH = 0xe550f18a5cf4d2f542bd92105423c103c4c0e1f54285b912f74af9c6df371b89;
+
     /**
      * @dev Creates a new EIP712Verifier instance.
      *
@@ -32,12 +35,13 @@ abstract contract EIP712Verifier is EIP712 {
         bytes32 digest = _hashTypedDataV4(
             keccak256(
                 abi.encode(
+                    STAMPER_TYPEHASH,
                     request.schema,
                     data.recipient,
                     data.expirationTime,
                     data.revocable,
                     data.refUID,
-                    keccak256(data.data)                
+                    keccak256(data.data)
                 )
             )
         );
