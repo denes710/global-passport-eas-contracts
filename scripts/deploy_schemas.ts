@@ -23,7 +23,7 @@ async function main() {
     console.log("AddStampSchemaId: " + uidAddSchema);
 
     // Stamp
-    const txStampSchema = await schemaRegistry.register('bool stampd', stampSchemaResolver.getAddress(), false);
+    const txStampSchema = await schemaRegistry.register('', stampSchemaResolver.getAddress(), false);
     const receiptStampSchema = await txStampSchema.wait();
     const [uidStampSchema,] = receiptStampSchema.logs[0].args;
     console.log("StampSchemaId: " + uidStampSchema);
