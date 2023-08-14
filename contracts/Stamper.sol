@@ -33,11 +33,9 @@ contract Stamper is IStamper, Ownable, EIP712Verifier {
         return _eas.attest(request);
     }
 
-
     function stamp(DelegatedAttestationRequest calldata delegatedRequest) external override payable returns (bytes32) {
         require(delegatedRequest.schema == _stampSchemaId, "It is not the expected stamp schema!");
         require(delegatedRequest.attester == owner(), "The attester is not the owner!");
-
         _verifyAttest(delegatedRequest);
 
         return _eas.attest(AttestationRequest(_stampSchemaId, delegatedRequest.data));
